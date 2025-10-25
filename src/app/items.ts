@@ -52,6 +52,15 @@ export const combinations = new Map<string, [string, string]>([
   ["🎂", ["🍞", "💧"]],
 ]);
 
+export const ingredientItems = new Set(
+  Array.from(combinations.values()).flat(),
+);
+export const deadEndItems = new Set(
+  items
+    .map((item) => item.emoji)
+    .filter((emoji) => !ingredientItems.has(emoji)),
+);
+
 export function getCombinationResult(
   item1: string,
   item2: string,
@@ -115,8 +124,10 @@ export const handleDrop = async () => {
       y: (item.y + other.y) / 2,
     };
 
-    await discoveredItemsStore.update((s) => s.add(resultEmoji));
-    await usedItemsStore.update((s) => s.add(item.emoji).add(other.emoji));
+    await discoveredItemsStore.update((s) => new Set(s.add(resultEmoji)));
+    await usedItemsStore.update(
+      (s) => new Set(s.add(item.emoji).add(other.emoji)),
+    );
 
     gameStore.update((s) => ({
       ...s,
