@@ -1,16 +1,18 @@
 import type { Item } from "app/items";
-import { deadEndItems, gameStore, handleDrop, handleMove } from "app/items";
+import { baseItems, gameStore, handleDrop, handleMove } from "app/items";
 
 export default function SidebarItem({
   item,
-  used,
+  resultsDiscovered,
+  resultsTotal,
 }: {
   item: Item;
-  used: boolean;
+  resultsDiscovered: number;
+  resultsTotal: number;
 }) {
   return (
     <div
-      className="flex cursor-grab touch-pan-y items-center gap-1 p-2 hover:bg-amber-500"
+      className="flex cursor-grab touch-pan-y items-center gap-2 p-2 hover:bg-amber-500"
       onPointerDown={(event) => {
         event.preventDefault();
         event.currentTarget.setPointerCapture(event.pointerId);
@@ -30,18 +32,25 @@ export default function SidebarItem({
       onPointerUp={handleDrop}
     >
       <span className="text-2xl">{item.emoji}</span>
-      <span className="min-w-0 truncate">{item.name}</span>
-      {deadEndItems.has(item.emoji) ? (
-        <div className="ml-auto rounded bg-gray-600 px-1 text-xs text-white">
-          Final
-        </div>
-      ) : (
-        !used && (
-          <div className="ml-auto rounded bg-red-600 px-1 text-xs text-white">
-            New
+      <div className="flex min-w-0 flex-grow flex-col items-start">
+        <p className="truncate">{item.name}</p>
+        {resultsTotal === 0 ? (
+          <div className="rounded bg-gray-600 px-1 text-xs text-white">
+            Final
           </div>
-        )
-      )}
+        ) : resultsDiscovered >= resultsTotal ? (
+          <div className="rounded bg-lime-600 px-1 text-xs text-white">
+            Completed
+          </div>
+        ) : (
+          resultsDiscovered === 0 &&
+          !baseItems.includes(item.emoji) && (
+            <div className="rounded bg-red-600 px-1 text-xs text-white">
+              New
+            </div>
+          )
+        )}
+      </div>
     </div>
   );
 }
