@@ -116,7 +116,7 @@ export const handleDrop = async () => {
       y: (item.y + other.y) / 2,
     };
 
-    await discoveredItemsStore.update((s) => new Set(s.add(resultEmoji)));
+    await discoveredItemsStore.update((s) => new Set(s).add(resultEmoji));
 
     gameStore.update((s) => ({
       ...s,

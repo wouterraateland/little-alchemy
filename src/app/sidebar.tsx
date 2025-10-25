@@ -7,7 +7,7 @@ export default function Sidebar() {
   const discoveredItems = useAsyncStore(discoveredItemsStore);
 
   return (
-    <div className="w-40 overflow-y-auto bg-amber-400 text-amber-950">
+    <div className="w-40 overflow-y-auto overscroll-y-contain bg-amber-400 text-amber-950">
       {items
         .filter((item) => discoveredItems.has(item.emoji))
         .toSorted(firstBy((item) => item.name))

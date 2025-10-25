@@ -1,5 +1,6 @@
 "use client";
 
+import DiscoveryObserver from "app/discovery-observer";
 import Main from "app/main";
 import Sidebar from "app/sidebar";
 import ThropyCase from "app/throphy-case";
@@ -15,6 +16,7 @@ export default function Page() {
             <Sidebar />
           </div>
         </div>
+        <DiscoveryObserver />
       </body>
     </html>
   );
