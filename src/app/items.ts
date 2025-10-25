@@ -83,6 +83,7 @@ export type FieldItem = { emoji: string; id: string; x: number; y: number };
 export const gameStore = createStore({
   field: new Array<FieldItem>(),
   focus: null as string | null,
+  rect: null as DOMRect | null,
 });
 
 export const handleMove = (dx: number, dy: number) => {
@@ -96,24 +97,38 @@ export const handleMove = (dx: number, dy: number) => {
 
 export const handleDrop = async () => {
   const state = gameStore.get();
-  const item = state.field.find((item) => item.id === state.focus);
-  if (!item) return;
+  const selected = state.field.find((item) => item.id === state.focus);
+  if (!selected) return;
+  if (
+    !state.rect ||
+    selected.x < state.rect.left ||
+    selected.x > state.rect.right ||
+    selected.y < state.rect.top ||
+    selected.y > state.rect.bottom
+  ) {
+    gameStore.update((s) => ({
+      ...s,
+      field: s.field.filter((other) => other !== selected),
+      focus: null,
+    }));
+    return;
+  }
   gameStore.update((s) => ({ ...s, focus: null }));
 
   for (const other of state.field) {
-    if (other.id === item.id) continue;
-    const distance = Math.hypot(item.x - other.x, item.y - other.y);
+    if (other.id === selected.id) continue;
+    const distance = Math.hypot(selected.x - other.x, selected.y - other.y);
     if (distance > 80) continue;
 
-    const resultEmoji = getCombinationResult(item.emoji, other.emoji);
+    const resultEmoji = getCombinationResult(selected.emoji, other.emoji);
     if (!resultEmoji) continue;
 
     const id = crypto.randomUUID();
     const newItem: FieldItem = {
       emoji: resultEmoji,
       id,
-      x: (item.x + other.x) / 2,
-      y: (item.y + other.y) / 2,
+      x: (selected.x + other.x) / 2,
+      y: (selected.y + other.y) / 2,
     };
 
     await discoveredItemsStore.update((s) => new Set(s).add(resultEmoji));
@@ -121,7 +136,7 @@ export const handleDrop = async () => {
     gameStore.update((s) => ({
       ...s,
       field: [
-        ...s.field.filter((f) => f.id !== item.id && f.id !== other.id),
+        ...s.field.filter((f) => f.id !== selected.id && f.id !== other.id),
         newItem,
       ],
       focus: id,

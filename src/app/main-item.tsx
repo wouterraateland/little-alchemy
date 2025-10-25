@@ -25,7 +25,11 @@ export default function MainItem({
         if (!event.currentTarget.hasPointerCapture(event.pointerId)) return;
         handleMove(event.movementX, event.movementY);
       }}
-      onPointerUp={handleDrop}
+      onPointerUp={async (event) => {
+        if (!event.currentTarget.hasPointerCapture(event.pointerId)) return;
+        event.currentTarget.releasePointerCapture(event.pointerId);
+        await handleDrop();
+      }}
       style={{
         transform: `translate(calc(${item.x}px - 50%), calc(${item.y}px - 50%))`,
       }}

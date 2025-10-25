@@ -18,6 +18,7 @@ export default function SidebarItem({
         event.currentTarget.setPointerCapture(event.pointerId);
         const id = crypto.randomUUID();
         gameStore.update((s) => ({
+          ...s,
           field: [
             ...s.field,
             { emoji: item.emoji, id, x: event.clientX, y: event.clientY },
@@ -29,7 +30,11 @@ export default function SidebarItem({
         if (!event.currentTarget.hasPointerCapture(event.pointerId)) return;
         handleMove(event.movementX, event.movementY);
       }}
-      onPointerUp={handleDrop}
+      onPointerUp={async (event) => {
+        if (!event.currentTarget.hasPointerCapture(event.pointerId)) return;
+        event.currentTarget.releasePointerCapture(event.pointerId);
+        await handleDrop();
+      }}
     >
       <span className="text-2xl">{item.emoji}</span>
       <div className="flex min-w-0 flex-grow flex-col items-start">
