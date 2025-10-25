@@ -13,6 +13,13 @@ export default function SidebarItem({
   return (
     <div
       className="flex cursor-grab touch-pan-y items-center gap-2 p-2 hover:bg-amber-500"
+      onPointerCancel={() => {
+        gameStore.update((s) => ({
+          ...s,
+          field: s.field.filter((other) => other.id !== s.focus),
+          focus: null,
+        }));
+      }}
       onPointerDown={(event) => {
         event.preventDefault();
         event.currentTarget.setPointerCapture(event.pointerId);
