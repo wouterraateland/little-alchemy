@@ -1,3 +1,4 @@
+import AgeLabel from "app/age-label";
 import type { Item } from "app/items";
 import {
   baseItems,
@@ -66,11 +67,7 @@ export default function SidebarItem({
         <p className="truncate">{item.name}</p>
         {locked ? (
           <div className="rounded bg-gray-600 px-1 text-xs text-white">
-            Vergrendeld
-          </div>
-        ) : resultsTotal === 0 ? (
-          <div className="rounded bg-gray-600 px-1 text-xs text-white">
-            Laatste
+            <AgeLabel date={itemLocks.get(item.emoji)!} />
           </div>
         ) : resultsDiscovered >= resultsTotal ? (
           <div className="rounded bg-lime-600 px-1 text-xs text-white">
