@@ -12,7 +12,7 @@ export default function SidebarItem({
 }) {
   return (
     <div
-      className="flex cursor-grab touch-pan-y items-center gap-2 p-2 hover:bg-amber-500"
+      className="flex cursor-grab touch-pan-y items-center gap-2 p-2 text-sm hover:bg-amber-500"
       onPointerCancel={() => {
         gameStore.update((s) => ({
           ...s,
@@ -43,22 +43,22 @@ export default function SidebarItem({
         await handleDrop();
       }}
     >
-      <span className="text-2xl">{item.emoji}</span>
+      <span className="text-3xl">{item.emoji}</span>
       <div className="flex min-w-0 flex-grow flex-col items-start">
         <p className="truncate">{item.name}</p>
         {resultsTotal === 0 ? (
           <div className="rounded bg-gray-600 px-1 text-xs text-white">
-            Final
+            Laatste
           </div>
         ) : resultsDiscovered >= resultsTotal ? (
           <div className="rounded bg-lime-600 px-1 text-xs text-white">
-            Completed
+            Compleet
           </div>
         ) : (
           resultsDiscovered === 0 &&
           !baseItems.includes(item.emoji) && (
             <div className="rounded bg-red-600 px-1 text-xs text-white">
-              New
+              Nieuw
             </div>
           )
         )}

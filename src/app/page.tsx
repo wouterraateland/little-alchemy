@@ -9,11 +9,11 @@ export default function Page() {
   return (
     <html>
       <body className="flex h-dvh w-dvw select-none flex-col overscroll-contain">
-        <div className="relative flex flex-grow flex-col overflow-hidden">
-          <ThropyCase />
-          <div className="flex min-h-0 flex-grow">
+        <div className="relative flex flex-grow overflow-hidden">
+          <Sidebar />
+          <div className="flex min-w-0 flex-grow flex-col">
+            <ThropyCase />
             <Main />
-            <Sidebar />
           </div>
         </div>
         <DiscoveryObserver />

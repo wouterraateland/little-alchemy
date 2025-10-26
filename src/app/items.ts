@@ -6,30 +6,26 @@ export type Item = {
 };
 
 export const items: Array<Item> = [
-  { emoji: "🪨", name: "Rock" },
+  { emoji: "🪨", name: "Steen" },
   { emoji: "💧", name: "Water" },
   { emoji: "🌱", name: "Plant" },
-  { emoji: "🔥", name: "Fire" },
-  { emoji: "🌬️", name: "Air" },
-  { emoji: "🌳", name: "Tree" },
-  { emoji: "🌻", name: "Flower" },
-  { emoji: "🍞", name: "Bread" },
-  { emoji: "🏠", name: "House" },
-  { emoji: "🚗", name: "Car" },
-  { emoji: "🧱", name: "Brick" },
-  { emoji: "🛤️", name: "Railroad" },
-  { emoji: "🏭", name: "Factory" },
-  { emoji: "🌋", name: "Volcano" },
-  { emoji: "⚡", name: "Electricity" },
-  { emoji: "🎨", name: "Painting" },
-  { emoji: "🗼", name: "Eiffel Tower" },
-  { emoji: "🚂", name: "Train" },
-  { emoji: "🎂", name: "Cake" },
+  { emoji: "🔥", name: "Vuur" },
+  { emoji: "🌬️", name: "Lucht" },
+  { emoji: "🌳", name: "Boom" },
+  { emoji: "🌻", name: "Zonnebloem" },
+  { emoji: "🍞", name: "Brood" },
+  { emoji: "🏠", name: "Huis" },
+  { emoji: "🚗", name: "Auto" },
+  { emoji: "🧱", name: "Baksteen" },
+  { emoji: "🛤️", name: "Spoor" },
+  { emoji: "🏭", name: "Fabriek" },
+  { emoji: "🌋", name: "Vulkaan" },
+  { emoji: "⚡", name: "Elektriciteit" },
+  { emoji: "🎨", name: "Kunst" },
+  { emoji: "🗼", name: "Eiffeltoren" },
+  { emoji: "🚂", name: "Trein" },
+  { emoji: "🎂", name: "Taart" },
 ];
-
-export const itemMap: Map<string, Item> = new Map(
-  items.map((item) => [item.emoji, item]),
-);
 
 export const baseItems = ["🪨", "💧", "🔥", "🌬️"];
 export const targetItems = ["🗼", "🎨", "🚂", "🎂"];
@@ -51,6 +47,10 @@ export const combinations = new Map<string, [string, string]>([
   ["🚂", ["🛤️", "⚡"]],
   ["🎂", ["🍞", "💧"]],
 ]);
+
+export const itemMap: Map<string, Item> = new Map(
+  items.map((item) => [item.emoji, item]),
+);
 
 export const ingredients = new Map<string, Set<string>>();
 for (const item of items) ingredients.set(item.emoji, new Set());
@@ -98,8 +98,8 @@ export const handleMove = (dx: number, dy: number) => {
 export const handleDrop = async () => {
   const state = gameStore.get();
   const selected = state.field.find((item) => item.id === state.focus);
-  if (!selected) return;
   if (
+    !selected ||
     !state.rect ||
     selected.x < state.rect.left ||
     selected.x > state.rect.right ||
@@ -115,32 +115,31 @@ export const handleDrop = async () => {
   }
   gameStore.update((s) => ({ ...s, focus: null }));
 
-  for (const other of state.field) {
-    if (other.id === selected.id) continue;
-    const distance = Math.hypot(selected.x - other.x, selected.y - other.y);
-    if (distance > 80) continue;
+  const target = state.field.findLast(
+    (item) =>
+      item.id !== selected.id &&
+      Math.hypot(selected.x - item.x, selected.y - item.y) <= 48,
+  );
+  if (!target) return;
 
-    const resultEmoji = getCombinationResult(selected.emoji, other.emoji);
-    if (!resultEmoji) continue;
+  const resultEmoji = getCombinationResult(selected.emoji, target.emoji);
+  if (!resultEmoji) return;
 
-    const id = crypto.randomUUID();
-    const newItem: FieldItem = {
-      emoji: resultEmoji,
-      id,
-      x: (selected.x + other.x) / 2,
-      y: (selected.y + other.y) / 2,
-    };
+  const id = crypto.randomUUID();
+  const newItem: FieldItem = {
+    emoji: resultEmoji,
+    id,
+    x: (selected.x + target.x) / 2,
+    y: (selected.y + target.y) / 2,
+  };
 
-    await discoveredItemsStore.update((s) => new Set(s).add(resultEmoji));
+  await discoveredItemsStore.update((s) => new Set(s).add(resultEmoji));
 
-    gameStore.update((s) => ({
-      ...s,
-      field: [
-        ...s.field.filter((f) => f.id !== selected.id && f.id !== other.id),
-        newItem,
-      ],
-      focus: id,
-    }));
-    break;
-  }
+  gameStore.update((s) => ({
+    ...s,
+    field: [
+      ...s.field.filter((f) => f.id !== selected.id && f.id !== target.id),
+      newItem,
+    ],
+  }));
 };

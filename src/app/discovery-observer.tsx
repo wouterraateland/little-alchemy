@@ -1,4 +1,4 @@
-import { discoveredItemsStore, itemMap } from "app/items";
+import { discoveredItemsStore, itemMap, targetItems } from "app/items";
 import SunshineBackground from "app/sunshine-background";
 import useAsyncStore from "hooks/use-async-store";
 import { useState } from "react";
@@ -17,20 +17,28 @@ export default function DiscoveryObserver() {
       >
         <SunshineBackground />
         <div className="h-10" />
-        <p className="text-white">New item discovered!</p>
-        <p className="rounded-full bg-amber-700 p-8 text-6xl">{item}</p>
-        <p className="text-2xl font-bold text-white">
+        {targetItems.includes(item) ? (
+          <p className="text-amber-50">Nieuwe sleutel-ontdekking!</p>
+        ) : (
+          <p className="text-amber-50">Nieuwe ontdekking!</p>
+        )}
+        {targetItems.includes(item) ? (
+          <p className="rounded-full bg-amber-200 p-8 text-6xl">{item}</p>
+        ) : (
+          <p className="rounded-full bg-amber-700 p-8 text-6xl">{item}</p>
+        )}
+        <p className="text-2xl font-bold text-amber-50">
           {itemMap.get(item)?.name}
         </p>
         <button
-          className="rounded bg-white px-3.5 py-2"
+          className="rounded bg-amber-50 px-3.5 py-2"
           onClick={() => {
             setPreviouslyDiscoveredItems((current) =>
               new Set(current).add(item),
             );
           }}
         >
-          Continue
+          Doorgaan
         </button>
       </div>
     ));
