@@ -10,6 +10,7 @@ export default function DiscoveryObserver() {
 
   return Array.from(discoveredItems)
     .filter((item) => !previouslyDiscoveredItems.has(item))
+    .slice(0, 1)
     .map((item) => (
       <div
         key={item}
