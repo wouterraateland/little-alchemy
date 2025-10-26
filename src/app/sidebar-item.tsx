@@ -1,5 +1,12 @@
 import type { Item } from "app/items";
-import { baseItems, gameStore, handleDrop, handleMove } from "app/items";
+import {
+  baseItems,
+  gameStore,
+  handleDrop,
+  handleMove,
+  itemLocks,
+} from "app/items";
+import clsx from "clsx";
 
 export default function SidebarItem({
   item,
@@ -10,9 +17,15 @@ export default function SidebarItem({
   resultsDiscovered: number;
   resultsTotal: number;
 }) {
+  const locked =
+    itemLocks.has(item.emoji) && itemLocks.get(item.emoji)! > new Date();
+
   return (
     <div
-      className="flex cursor-grab touch-pan-y items-center gap-2 p-2 text-sm hover:bg-amber-500"
+      className={clsx(
+        "flex cursor-grab touch-pan-y items-center gap-2 p-2 text-sm hover:bg-amber-500",
+        locked && "pointer-events-none",
+      )}
       onPointerCancel={() => {
         gameStore.update((s) => ({
           ...s,
@@ -43,10 +56,19 @@ export default function SidebarItem({
         await handleDrop();
       }}
     >
-      <span className="text-3xl">{item.emoji}</span>
+      <div className="grid *:col-start-1 *:row-start-1">
+        <div className={clsx("text-3xl", locked && "opacity-50")}>
+          {item.emoji}
+        </div>
+        {locked && <div className="self-start justify-self-end">🔒</div>}
+      </div>
       <div className="flex min-w-0 flex-grow flex-col items-start">
         <p className="truncate">{item.name}</p>
-        {resultsTotal === 0 ? (
+        {locked ? (
+          <div className="rounded bg-gray-600 px-1 text-xs text-white">
+            Vergrendeld
+          </div>
+        ) : resultsTotal === 0 ? (
           <div className="rounded bg-gray-600 px-1 text-xs text-white">
             Laatste
           </div>

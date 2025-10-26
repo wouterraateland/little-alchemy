@@ -9,11 +9,13 @@ export const items: Array<Item> = [
   { emoji: "⏰", name: "Tijd" },
   { emoji: "☕️", name: "Koffie" },
   { emoji: "♨️", name: "Oven" },
-  { emoji: "⚡", name: "Elektriciteit" },
+  { emoji: "⚡️", name: "Energie" },
   { emoji: "⛈️", name: "Onweer" },
   { emoji: "⛓️", name: "IJzer" },
   { emoji: "⛰️", name: "Berg" },
   { emoji: "⛺️", name: "Tent" },
+  { emoji: "🇫🇷", name: "Frankrijk" },
+  { emoji: "🌃", name: "Stad" },
   { emoji: "🌊", name: "Zee" },
   { emoji: "🌋", name: "Vulkaan" },
   { emoji: "🌍", name: "Aarde" },
@@ -21,8 +23,10 @@ export const items: Array<Item> = [
   { emoji: "🌧️", name: "Regen" },
   { emoji: "🌬️", name: "Lucht" },
   { emoji: "🌱", name: "Plant" },
+  { emoji: "🌲", name: "Den" },
   { emoji: "🌳", name: "Boom" },
   { emoji: "🌻", name: "Zonnebloem" },
+  { emoji: "🌾", name: "Graan" },
   { emoji: "🍞", name: "Brood" },
   { emoji: "🍪", name: "Koekie" },
   { emoji: "🍰", name: "Gebak" },
@@ -34,22 +38,24 @@ export const items: Array<Item> = [
   { emoji: "🏫", name: "Bibliotheek" },
   { emoji: "🏭", name: "Fabriek" },
   { emoji: "🏺", name: "Vaas" },
+  { emoji: "🐌", name: "Slak" },
   { emoji: "🐜", name: "Insect" },
   { emoji: "🐵", name: "Aap" },
   { emoji: "🐶", name: "Goldie" },
   { emoji: "👂", name: "Oor" },
-  { emoji: "👟", name: "Schoen" },
   { emoji: "👨‍🎨", name: "Kunstenaar" },
   { emoji: "👩‍❤️‍👨", name: "Liefde" },
   { emoji: "👩‍🚒", name: "Brandweerman" },
   { emoji: "💥", name: "Knal!" },
   { emoji: "💧", name: "Water" },
   { emoji: "💨", name: "Stoom" },
+  { emoji: "📄", name: "Papier" },
   { emoji: "📚", name: "Boeken" },
   { emoji: "🔥", name: "Vuur" },
   { emoji: "🔪", name: "Mes" },
   { emoji: "🕯️", name: "Kaars" },
   { emoji: "🗼", name: "Eiffeltoren" },
+  { emoji: "🗿", name: "Beeld" },
   { emoji: "🥊", name: "Bokshandschoen" },
   { emoji: "🥖", name: "Stokbrood" },
   { emoji: "🥟", name: "Deeg" },
@@ -66,64 +72,96 @@ export const items: Array<Item> = [
   { emoji: "🚗", name: "Auto" },
   { emoji: "🚙", name: "SUV" },
   { emoji: "🚲", name: "Fiets" },
+  { emoji: "🛠️", name: "Gereedschap" },
   { emoji: "🛤️", name: "Spoor" },
   { emoji: "🛶", name: "Kano" },
 ];
 
-export const baseItems = ["🪨", "💧", "🔥", "🌬️"];
+export const baseItems = ["🌱", "🪨", "💧", "🌬️"];
 export const targetItems = ["🗼", "🎨", "🚂", "🎂"];
 
-export const combinations = new Map<string, [string, string]>([
-  ["⏰", ["☕️", "⚡"]],
-  ["☕️", ["💧", "🔥"]],
-  ["♨️", ["🔥", "🪵"]],
-  ["⚡", ["🌬️", "🔥"]],
-  ["⛓️", ["🪨", "🪨"]],
-  ["⛰️", ["🪨", "🌬️"]],
-  ["⛺️", ["🏕️", "🪵"]],
-  ["🌊", ["💧", "💧"]],
-  ["🌋", ["🪨", "🔥"]],
-  ["🌍", ["🌋", "🌊"]],
-  ["🌞", ["🔥", "🌬️"]],
-  ["🌧️", ["🌊", "🌬️"]],
-  ["🌬️", ["🪨", "🪨"]],
-  ["🌱", ["🪨", "💧"]],
-  ["🌳", ["🌱", "💧"]],
-  ["🌻", ["🌱", "🌬️"]],
-  ["🍞", ["🌱", "🔥"]],
-  ["🍪", ["🍞", "🔥"]],
-  ["🍰", ["🍞", "💧"]],
-  ["🎂", ["🍰", "🍪"]],
-  ["🎨", ["🌻", "🏭"]],
-  ["🏕️", ["🌳", "💧"]],
-  ["🏞️", ["🌳", "🌬️"]],
-  ["🏠", ["🪨", "🌱"]],
-  ["🏫", ["📚", "🏠"]],
-  ["🏭", ["🧱", "🔥"]],
-  ["🐜", ["🌳", "🪵"]],
-  ["🐵", ["🧑", "🌳"]],
-  ["🐶", ["🧑", "🐜"]],
-  ["👩‍🎨", ["🧑", "🎨"]],
-  ["👩‍🚒", ["🧑", "🔥"]],
-  ["💥", ["🔥", "⚡"]],
-  ["💧", ["🌬️", "🌊"]],
-  ["💨", ["🌬️", "🔥"]],
-  ["📚", ["👂", "🧑"]],
-  ["🔪", ["🪵", "🪓"]],
-  ["🕯️", ["🔥", "💧"]],
-  ["🗼", ["🛤️", "🏭"]],
-  ["🥊", ["👟", "🧑"]],
-  ["🥖", ["🍞", "🪵"]],
-  ["🥟", ["🌱", "🪵"]],
+export const itemLocks = new Map<string, Date>([
+  ["🌱", new Date("2025-10-26T00:00:00Z")],
+  ["🛠️", new Date("2025-10-27T00:00:00Z")],
+  ["🦫", new Date("2025-10-28T00:00:00Z")],
+  ["🌊", new Date("2025-10-29T00:00:00Z")],
+]);
+
+const combinations = new Map<string, [string, string]>([
+  // Day 1
+  ["💥", ["🪨", "🪨"]],
+  ["🔥", ["💥", "🌱"]],
+  ["🌞", ["🌬️", "🔥"]],
+  ["🌻", ["🌱", "🌞"]],
+  ["🌧️", ["🌬️", "💧"]],
+  ["⛈️", ["🌧️", "🌧️"]],
+  ["⚡️", ["⛈️", "🌬️"]],
+  ["🐜", ["⚡️", "🌱"]],
+  ["🐌", ["🐜", "🌱"]],
+  ["⏰", ["🐌", "⚡️"]],
+  ["🐵", ["🐜", "⏰"]],
   ["🦧", ["🐵", "⏰"]],
-  ["🦫", ["🐶", "🌳"]],
-  ["🧱", ["🪨", "🪨"]],
-  ["🪓", ["🪵", "🪵"]],
-  ["🚂", ["🛤️", "⚡"]],
-  ["🚗", ["🏠", "🪨"]],
-  ["🚲", ["🧑", "🪵"]],
-  ["🛤️", ["🧱", "🚗"]],
-  ["🛶", ["🌊", "🪵"]],
+  ["🧑", ["🦧", "⏰"]],
+  ["🎨", ["🌻", "🧑"]],
+
+  // Day 2
+  ["🛠️", ["🪨", "🧑"]],
+  ["🚲", ["🧑", "🛠️"]],
+  ["🏭", ["🔥", "🛠️"]],
+  ["🚗", ["🚲", "🏭"]],
+  ["💨", ["💧", "🔥"]],
+  ["🚂", ["💨", "🚗"]],
+
+  // Day 3
+  ["🌳", ["🌱", "💧"]],
+  ["🦫", ["🐜", "🌳"]],
+  ["🪓", ["🦫", "🦫"]],
+  ["🪵", ["🌳", "🪓"]],
+  ["🔪", ["🪵", "🪨"]],
+  ["🕯️", ["🔥", "🔪"]],
+  ["⛓️", ["🪨", "🏭"]],
+  ["♨️", ["🔥", "⛓️"]],
+  ["🥟", ["🌱", "🪨"]],
+  ["🍪", ["♨️", "🥟"]],
+  ["🍰", ["🎨", "🍪"]],
+  ["🎂", ["🍰", "🕯️"]],
+
+  // Day 4
+  ["🌊", ["💧", "💧"]],
+  ["🏞️", ["🌳", "🌊"]],
+  ["⛺️", ["🏞️", "🧑"]],
+  ["🇫🇷", ["⛺️", "🌞"]],
+  ["🥖", ["🧑", "🇫🇷"]],
+  ["🧱", ["🔥", "🪨"]],
+  ["🏠", ["⛺️", "🧱"]],
+  ["🌃", ["🏠", "🏠"]],
+  ["🗼", ["🥖", "🌃"]],
+
+  // Other
+  ["👨‍🎨", ["🎨", "🧑"]],
+  ["👂", ["👨‍🎨", "🔪"]],
+  ["🧗", ["🧑", "⛰️"]],
+  ["🛶", ["🇫🇷", "🌊"]],
+  ["🗿", ["🎨", "⛰️"]],
+  ["🏺", ["🎨", "🪨"]],
+  ["🥊", ["🧑", "💥"]],
+  ["☕️", ["⚡️", "💧"]],
+  ["🛤️", ["🚂", "🪵"]],
+  ["🌾", ["🌱", "🧑"]],
+  ["🍞", ["🌾", "🧑"]],
+  ["🌍", ["🌊", "🪨"]],
+  ["⛰️", ["🌬️", "🪨"]],
+  ["🐶", ["👩‍❤️‍👨", "🧑"]],
+  ["🏕️", ["🧑", "🌲"]],
+  ["🌲", ["🌳", "🌧️"]],
+  ["🫀", ["🧑", "🔪"]],
+  ["🌋", ["⛰️", "🔥"]],
+  ["👩‍❤️‍👨", ["🧑", "🫀"]],
+  ["👩‍🚒", ["🌃", "🔥"]],
+  ["🏫", ["📚", "🏠"]],
+  ["📚", ["📄", "📄"]],
+  ["📄", ["🌲", "🏭"]],
+  ["🚙", ["🚗", "🐶"]],
 ]);
 
 export const itemMap: Map<string, Item> = new Map(
@@ -133,14 +171,13 @@ export const itemMap: Map<string, Item> = new Map(
 export const ingredients = new Map<string, Set<string>>();
 for (const item of items) ingredients.set(item.emoji, new Set());
 for (const [result, [input1, input2]] of combinations.entries()) {
+  if (!ingredients.has(input1)) console.log("Missing ingredient:", input1);
+  if (!ingredients.has(input2)) console.log("Missing ingredient:", input2);
   ingredients.get(input1)!.add(result);
   ingredients.get(input2)!.add(result);
 }
 
-export function getCombinationResult(
-  item1: string,
-  item2: string,
-): string | null {
+const getCombinationResult = (item1: string, item2: string) => {
   for (const [result, [input1, input2]] of combinations.entries())
     if (
       (item1 === input1 && item2 === input2) ||
@@ -148,7 +185,7 @@ export function getCombinationResult(
     )
       return result;
   return null;
-}
+};
 
 export const discoveredItemsStore = createCookieStore(
   "discovered_items",
@@ -203,21 +240,21 @@ export const handleDrop = async () => {
   const resultEmoji = getCombinationResult(selected.emoji, target.emoji);
   if (!resultEmoji) return;
 
-  const id = crypto.randomUUID();
-  const newItem: FieldItem = {
-    emoji: resultEmoji,
-    id,
-    x: (selected.x + target.x) / 2,
-    y: (selected.y + target.y) / 2,
-  };
-
   await discoveredItemsStore.update((s) => new Set(s).add(resultEmoji));
+
+  if (itemLocks.has(resultEmoji) && itemLocks.get(resultEmoji)! > new Date())
+    return;
 
   gameStore.update((s) => ({
     ...s,
     field: [
       ...s.field.filter((f) => f.id !== selected.id && f.id !== target.id),
-      newItem,
+      {
+        emoji: resultEmoji,
+        id: crypto.randomUUID(),
+        x: (selected.x + target.x) / 2,
+        y: (selected.y + target.y) / 2,
+      },
     ],
   }));
 };

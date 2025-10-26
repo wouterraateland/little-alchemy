@@ -1,5 +1,6 @@
 import "styles.css";
 
+import QueryCacheProvider from "components/query-cache-provider";
 import type { Metadata, Viewport } from "next";
 
 export const metadata: Metadata = {
@@ -12,5 +13,5 @@ export const viewport: Viewport = {
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  return children;
+  return <QueryCacheProvider>{children}</QueryCacheProvider>;
 }
